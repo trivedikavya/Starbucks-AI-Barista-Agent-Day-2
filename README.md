@@ -36,3 +36,71 @@ day-2-starbucks-agent/
 │   └── package.json
 └── .env                     # API Keys (Not included in repo)
 ```
+
+## ⚙️ Setup & Installation
+### 1. Clone the Repository
+```Bash
+git clone <your-repo-url>
+cd day-2-starbucks-agent
+```
+
+### 2. Backend Setup
+Navigate to the backend folder and install the dependencies.
+
+```Bash
+cd backend
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Mac/Linux
+source venv/bin/activate
+
+pip install -r requirement.txt
+```
+
+### 3. Environment Variables
+Create a .env file in the backend/ directory and add your API keys:
+
+```Code snippet
+GOOGLE_API_KEY=your_gemini_api_key
+ASSEMBLYAI_API_KEY=your_assemblyai_api_key
+MURF_AI_API_KEY=your_murf_api_key
+```
+
+### 4. Run the Backend Server
+Start the FastAPI server. It will run on http://0.0.0.0:5000.
+
+```Bash
+python main.py
+# OR
+uvicorn main:app --host 0.0.0.0 --port 5000 --reload
+```
+
+### 5. Frontend Setup
+Simply open `frontend/index.html` in your browser.
+
+> **Recommended:** Use the "Live Server" extension in VS Code to serve the HTML file to avoid CORS issues with local files.
+
+## 🎯 How It Works
+
+1. **Click "Start Ordering"**: The app connects to the backend and welcomes you.
+2. **Speak**: Click the Mic button 🎙️ and say your order (e.g., *"I want a Grande Latte with Oat milk"*).
+3. **Processing**:
+    * The audio is sent to the backend.
+    * **AssemblyAI** transcribes the audio to text.
+    * **Gemini** analyzes the text, updates the `current_state` JSON, and formulates a reply.
+    * **Murf AI** generates audio for the reply.
+4. **Response**: The frontend plays the audio response and updates the visual receipt.
+5. **Completion**: Once all details (Drink, Size, Milk) are gathered, the order is marked complete and saved to `completed_orders.json`.
+
+## 📌 API Endpoints
+
+* `GET /health`: Checks if the server is running.
+* `POST /server`: Generates the initial greeting audio.
+* `POST /chat-with-voice`: Handles the full conversation loop (Audio Input -> State Update -> Audio Output).
+
+## 🔮 Future Improvements
+
+* Add payment integration simulation.
+* Implement WebSocket for lower latency streaming.
+* Add multiple voice options for the barista.
